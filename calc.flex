@@ -46,54 +46,64 @@ comment = "{-" ~"-}"
 
 %%
 <YYINITIAL>{
-"--"  !([^]* \R [^]*) \R  {}
+
 // Palavras-reservadas
 "main"                      { return new Token(yyline, yycolumn, TK.MAIN); }
 "print"                     { return new Token(yyline, yycolumn, TK.PRINT); }
 "return"                    { return new Token(yyline, yycolumn, TK.RETURN); }
-"'"[^']"'"                  { return new Token(yyline, yycolumn, TK.CHAR, yytext().charAt(1)); }
 "data"                      { return new Token(yyline, yycolumn, TK.DATA); }
 "new"                       { return new Token(yyline, yycolumn, TK.NEW); }
+"if"                        { return new Token(yyline, yycolumn, TK.IF); }
+"else"                      { return new Token(yyline, yycolumn, TK.ELSE); }
+"iterate"                   { return new Token(yyline, yycolumn, TK.ITERATE); }
+"read"                      { return new Token(yyline, yycolumn, TK.READ); }
+"true"                      { return new Token(yyline, yycolumn, TK.TRUE); }
+"false"                     { return new Token(yyline, yycolumn, TK.FALSE); }
+"null"                      { return new Token(yyline, yycolumn, TK.NULLVAL); }
 
 /* Literais */
 [a-z][a-zA-Z0-9_]*          { return new Token(yyline, yycolumn, TK.ID, yytext()); }
 [A-Z][a-zA-Z0-9_]*          { return new Token(yyline, yycolumn, TK.TYID, yytext()); }
 [0-9]*"."[0-9]+             { return new Token(yyline, yycolumn, TK.FLOAT, Token.toFloat(yytext())); }
+"'"[^']"'"                  { return new Token(yyline, yycolumn, TK.CHAR, yytext().charAt(1)); }
+
+/* Tipos de dados */
+{number}                    { return new Token( yyline, yycolumn, TK.INT, toInt(yytext()));   }
+"Bool"                      { return new Token(yyline, yycolumn, TK.BOOL_TYPE); }
+"Int"                       { return new Token(yyline, yycolumn, TK.INT_TYPE; }
+"Char"                      { return new Token(yyline, yycolumn, TK.CHAR_TYPE; }
+"Float"                     { return new Token(yyline, yycolumn, TK.FLOAT_TYPE; }
+
+/* Espaços e comentários */
+"--"  !([^]* \R [^]*) \R    {}
+"\\n"                       { return new Token(yyline, yycolumn, TK.NOVALINHA, yytext()); }
+" "                         { return new Token(yyline, yycolumn, TK.SPACE); }
 
 // Operadores e Símbolos
 "("                         { return new Token(yyline, yycolumn, TK.LPAREN); }
 ")"                         { return new Token(yyline, yycolumn, TK.RPAREN); }
 "{"                         { return new Token(yyline, yycolumn, TK.LBRACE); }
 "}"                         { return new Token(yyline, yycolumn, TK.RBRACE); }
-" "                         { return new Token(yyline, yycolumn, TK.SPACE); }
-"if"                        { return new Token(yyline, yycolumn, TK.IF); }
-"else"                      { return new Token(yyline, yycolumn, TK.ELSE); }
-"iterate"                   { return new Token(yyline, yycolumn, TK.ITERATE); }
-"read"                      { return new Token(yyline, yycolumn, TK.READ); }
+"+"                         { return new Token( yyline, yycolumn, TK.PLUS);  }
+"-"                         { return new Token( yyline, yycolumn, TK.MINUS); }
+"="                         { return new Token( yyline, yycolumn, TK.EQ); }
 "*"                         { return new Token(yyline, yycolumn, TK.MULT); }
+"/"                         { return new Token(yyline, yycolumn, TK.DIV; }
+"%"                         { return new Token(yyline, yycolumn, TK. MOD; }
 "<"                         { return new Token(yyline, yycolumn, TK.MENORQ); }
 ">"                         { return new Token(yyline, yycolumn, TK.MAISQ); }
 "'"                         { return new Token(yyline, yycolumn, TK.APOST); }
 "::"                        { return new Token(yyline, yycolumn, TK.DOUBLE_COLON); }
-"--"  !([^]* \R [^]*) \R    {}
 ":"                         { return new Token(yyline, yycolumn, TK.COLON); }
 ","                         { return new Token(yyline, yycolumn, TK.COMMA); }
 "."                         { return new Token(yyline, yycolumn, TK.DOT); }
-"true"                      { return new Token(yyline, yycolumn, TK.TRUE); }
-"false"                     { return new Token(yyline, yycolumn, TK.FALSE); }
-"null"                      { return new Token(yyline, yycolumn, TK.NULLVAL); }
-"Bool"                      { return new Token(yyline, yycolumn, TK.BOOL_TYPE); }
 "&&"                        { return new Token(yyline, yycolumn, TK.AND); }
 "!"                         { return new Token(yyline, yycolumn, TK.NOT); }
 "=="                        { return new Token(yyline, yycolumn, TK.EQUAL); } 
 "!="                        { return new Token(yyline, yycolumn, TK.NEQ); }
-"\\n"                       { return new Token(yyline, yycolumn, TK.NOVALINHA, yytext()); }
-{number}                    { return new Token( yyline, yycolumn, TK.INT, toInt(yytext()));   }
-"+"                         { return new Token( yyline, yycolumn, TK.PLUS);  }
-"-"                         { return new Token( yyline, yycolumn, TK.MINUS); }
-"="                         { return new Token( yyline, yycolumn, TK.EQ); }
 ";"                         { return new Token( yyline, yycolumn, TK.PV); }
 "["                         { yybegin(ARR); arr = new ArrayList();}
+
 {white}        {/* While reading whites do nothing*/ }
 [^]            {/* Matches any char form the input*/
                 throw new Error("Illegal character <"+ yytext()+">"); }
