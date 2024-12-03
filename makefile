@@ -1,3 +1,7 @@
+# Calc lexer
+# Deborah Caroline Rodrigues Oliveira - 17.1.8231
+# Thuane de Souza Espírito Santo - 17.1.8255
+####################################################
 
 all: lex
 	javac -cp . Main.java

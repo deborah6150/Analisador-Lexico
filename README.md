@@ -4,6 +4,16 @@ Este projeto implementa um analisador léxico para a linguagem "lang". Ele utili
 
 ---
 
+
+## 👩🏽‍💻 **Autores**
+
+- **Deborah Caroline Rodrigues Oliveira - 17.1.8231**    
+
+- **Thuane de Souza Espírito Santo - 17.1.8255**  
+
+---
+
+
 ## 📋 **Visão Geral**
 
 O analisador léxico é a primeira etapa de um compilador ou interpretador. Ele lê a entrada como um fluxo de caracteres e a converte em um fluxo de tokens, cada um com um tipo específico, linha e coluna. 
@@ -160,10 +170,3 @@ Cada token possui as seguintes informações:
 - **Valor:** Opcional, presente em literais e identificadores.
 
 ---
-
-## 👩🏽‍💻 **Autores**
-
-- **Deborah Caroline Rodrigues Oliveira**    
-
-- **Thuane de Souza Espírito Santo**   
-```
