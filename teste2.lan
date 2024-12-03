@@ -1,8 +1,0 @@
-main() : Int {
-   if(x == FALSE) {
-      return TRUE;
-   } else if(a != x && !a == c){
-      return Bool;
-   }
-   return new arrayList;
-}
