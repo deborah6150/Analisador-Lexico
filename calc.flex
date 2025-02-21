@@ -105,6 +105,7 @@ comment = "{-" ~"-}"
 "!="                        { return new Token(yyline, yycolumn, TK.NEQ); }
 ";"                         { return new Token(yyline, yycolumn, TK.PV); }
 "["                         { return new Token(yyline, yycolumn, TK.LBRACKET); }
+"]"                         { return new Token(yyline, yycolumn, TK.RBRACKET); }
 
 
 {white}        {/* While reading whites do nothing*/ }

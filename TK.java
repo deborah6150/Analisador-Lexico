@@ -11,6 +11,7 @@ public enum TK {
     EQ,
     PV,
     LBRACKET,
+    RBRACKET,
     EOF,
     MAIN,
     ID,
