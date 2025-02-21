@@ -10,7 +10,7 @@ public enum TK {
     MINUS,
     EQ,
     PV,
-    ARR,
+    LBRACKET,
     EOF,
     MAIN,
     ID,
