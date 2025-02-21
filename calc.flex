@@ -61,12 +61,6 @@ comment = "{-" ~"-}"
 "false"                     { return new Token(yyline, yycolumn, TK.FALSE); }
 "null"                      { return new Token(yyline, yycolumn, TK.NULLVAL); }
 
-/* Literais */
-[a-z][a-zA-Z0-9_]*          { return new Token(yyline, yycolumn, TK.ID, yytext()); }
-[A-Z][a-zA-Z0-9_]*          { return new Token(yyline, yycolumn, TK.TYID, yytext()); }
-[0-9]*"."[0-9]+             { return new Token(yyline, yycolumn, TK.FLOAT, Token.toFloat(yytext())); }
-"'"[^']"'"                  { return new Token(yyline, yycolumn, TK.CHAR, yytext().charAt(1)); }
-
 /* Tipos de dados */
 {number}                    { return new Token( yyline, yycolumn, TK.INT, toInt(yytext()));   }
 "Bool"                      { return new Token(yyline, yycolumn, TK.BOOL_TYPE); }
@@ -74,22 +68,30 @@ comment = "{-" ~"-}"
 "Char"                      { return new Token(yyline, yycolumn, TK.CHAR_TYPE; }
 "Float"                     { return new Token(yyline, yycolumn, TK.FLOAT_TYPE; }
 
+/* Literais */
+[a-z][a-zA-Z0-9_]*          { return new Token(yyline, yycolumn, TK.ID, yytext()); }
+[A-Z][a-zA-Z0-9_]*          { return new Token(yyline, yycolumn, TK.TYID, yytext()); }
+[0-9]*"."[0-9]+             { return new Token(yyline, yycolumn, TK.FLOAT, Token.toFloat(yytext())); }
+"'"[^']"'"                  { return new Token(yyline, yycolumn, TK.CHAR, yytext().charAt(1)); }
+"'" "\\" [0-9]{3} "'"       { 
+                              int asciiValue = Integer.parseInt(yytext().substring(2, 5)); 
+                              return new Token(yyline, yycolumn, TK.CHAR, (char) asciiValue); 
+                            }
+
 /* Espaços e comentários */
 "--"  !([^]* \R [^]*) \R    {}
-"\\n"                       { return new Token(yyline, yycolumn, TK.NOVALINHA, yytext()); }
-" "                         { return new Token(yyline, yycolumn, TK.SPACE); }
 
 // Operadores e Símbolos
 "("                         { return new Token(yyline, yycolumn, TK.LPAREN); }
 ")"                         { return new Token(yyline, yycolumn, TK.RPAREN); }
 "{"                         { return new Token(yyline, yycolumn, TK.LBRACE); }
 "}"                         { return new Token(yyline, yycolumn, TK.RBRACE); }
-"+"                         { return new Token( yyline, yycolumn, TK.PLUS);  }
-"-"                         { return new Token( yyline, yycolumn, TK.MINUS); }
-"="                         { return new Token( yyline, yycolumn, TK.EQ); }
+"+"                         { return new Token(yyline, yycolumn, TK.PLUS);  }
+"-"                         { return new Token(yyline, yycolumn, TK.MINUS); }
+"="                         { return new Token(yyline, yycolumn, TK.EQ); }
 "*"                         { return new Token(yyline, yycolumn, TK.MULT); }
-"/"                         { return new Token(yyline, yycolumn, TK.DIV; }
-"%"                         { return new Token(yyline, yycolumn, TK. MOD; }
+"/"                         { return new Token(yyline, yycolumn, TK.DIV); }
+"%"                         { return new Token(yyline, yycolumn, TK. MOD); }
 "<"                         { return new Token(yyline, yycolumn, TK.MENORQ); }
 ">"                         { return new Token(yyline, yycolumn, TK.MAISQ); }
 "'"                         { return new Token(yyline, yycolumn, TK.APOST); }
@@ -101,8 +103,10 @@ comment = "{-" ~"-}"
 "!"                         { return new Token(yyline, yycolumn, TK.NOT); }
 "=="                        { return new Token(yyline, yycolumn, TK.EQUAL); } 
 "!="                        { return new Token(yyline, yycolumn, TK.NEQ); }
-";"                         { return new Token( yyline, yycolumn, TK.PV); }
-"["                         { yybegin(ARR); arr = new ArrayList();}
+";"                         { return new Token(yyline, yycolumn, TK.PV); }
+"["                         { return new Token(yyline, yycolumn, TK.LBRACKET); }
+"]"                         { return new Token(yyline, yycolumn, TK.RBRACKET); }
+
 
 {white}        {/* While reading whites do nothing*/ }
 [^]            {/* Matches any char form the input*/
@@ -112,6 +116,5 @@ comment = "{-" ~"-}"
 <ARR>{
    {number} { arr.add(toInt( yytext()) ); }
    {white}        {/* While reading whites do nothing*/ }
-   "]"      { yybegin(YYINITIAL); return new Token( yyline, yycolumn, TK.ARR, arr); }
 }
 
